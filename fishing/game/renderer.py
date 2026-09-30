@@ -16,6 +16,7 @@ COLOR_BOAT = (120, 80, 50)
 COLOR_LINE = (240, 240, 240)
 COLOR_HOOK = (220, 220, 220)
 COLOR_TEXT = (255, 255, 255)
+COLOR_BANNER = (255, 220, 80)
 
 
 def draw_scene(surface, hook, fish_list):
@@ -35,7 +36,20 @@ def draw_text(surface, font, text, pos, color=COLOR_TEXT):
     surface.blit(font.render(text, True, color), pos)
 
 
-def draw_banner(surface, font, text):
-    surf = font.render(text, True, (255, 220, 80))
-    rect = surf.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2))
+def draw_text_right(surface, font, text, y, margin=10, color=COLOR_TEXT):
+    surf = font.render(text, True, color)
+    surface.blit(surf, (surface.get_width() - surf.get_width() - margin, y))
+
+
+def draw_overlay(surface, alpha=160):
+    """Dim the whole screen (used behind the end-of-round banner)."""
+    overlay = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, alpha))
+    surface.blit(overlay, (0, 0))
+
+
+def draw_banner(surface, font, text, y_offset=0, color=COLOR_BANNER):
+    surf = font.render(text, True, color)
+    rect = surf.get_rect(center=(surface.get_width() // 2,
+                                 surface.get_height() // 2 + y_offset))
     surface.blit(surf, rect)
